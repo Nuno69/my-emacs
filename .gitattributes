@@ -1,0 +1,6 @@
+* text=auto
+*.el text eol=lf
+*.elisp text eol=lf
+Makefile text eol=lf
+# Git LFS for large files in data directory
+data/** filter=lfs diff=lfs merge=lfs -text

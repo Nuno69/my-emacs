@@ -1,0 +1,2 @@
+# my own Emacs config
+This is my own, personal, opinionated and most probably wrong Emacs config. I pushed it here in orderr to track my changes as well as of the fact that I need to reinstall my system today and I need an easy way to restore everything.
