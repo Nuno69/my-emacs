@@ -20,6 +20,7 @@ nov-places
 /recentf
 
 /elpa/
+/org-persist/
 /straight/
 /quelpa/
 /.emacs.desktop*
@@ -27,6 +28,7 @@ nov-places
 .lsp-session*
 .lsp-session-*
 dap-breakpoints
+ido.last
 
 # macOS specific
 .DS_Store
