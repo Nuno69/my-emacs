@@ -5,7 +5,7 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 (package-initialize)
-(setq custom-file "/dev/null")
+;; (setq custom-file "~/.emacs.d/easy.el")
 
 (use-package emacs
   :ensure nil
@@ -106,6 +106,7 @@
   (setopt tts-notification-device "right")
   :custom
   (emacspeak-speak-tooltips t)
+  (emacspeak-play-program sox-play)
   (emacspeak-eww-inhibit-images t)
   (emacspeak-speak-time-brief-format "%l:%M")
   (emacspeak-speak-time-format "%l:%M%p on %A %B %_e")
@@ -125,7 +126,7 @@
   :ensure t
   :bind-keymap ("C-c t" . telega-prefix-map)
   :custom
-  (telega-server-libs-prefix "/opt/homebrew/Cellar/tdlib/HEAD-369ee92")
+  (telega-server-libs-prefix "/opt/homebrew/Cellar/tdlib/HEAD-dd1b761")
   (telega-chat-show-avatars nil)
   (telega-animation-play-inline nil)
   (telega-use-images nil)
@@ -204,8 +205,33 @@ Read Info node `(elisp) Desktop Notifications' for details."
   :custom
   (tree-widget-image-enable nil))
 
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode +1))
+
 (use-package swift-mode
+  :ensure t
+  :mode
+  "\\.swift\\'"
+  :interpreter
+  "swift")
+(use-package lsp-mode
+  :ensure t
+  :bind-keymap
+  ("C-c l" . lsp-command-map)
+  :commands
+  lsp
+  :hook
+  ((swift-mode . lsp)))
+(use-package lsp-ui
   :ensure t)
+
+(use-package lsp-sourcekit
+  :ensure t
+  :after lsp-mode
+  :custom
+  (lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
 
 (use-package alert
   :ensure t)
@@ -214,10 +240,27 @@ Read Info node `(elisp) Desktop Notifications' for details."
   :ensure t)
 
 (use-package company
-  :ensure t)
+  :ensure t
+  :config
+  (global-company-mode +1))
 
 (use-package flycheck
   :ensure t)
 
 (use-package magit
   :ensure t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(alert applescript-mode auctex company consult-gh empv flycheck
+	   gdscript-mode lsp-mode lsp-sourcekit lsp-ui magit md4rd nov
+	   org2blog swift-mode telega tmr)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
