@@ -5,7 +5,27 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 (package-initialize)
-;; (setq custom-file "~/.emacs.d/easy.el")
+(setq custom-file "~/.emacs.d/easy.el")
+
+(use-package emacspeak-setup
+  :load-path "~/emacspeak/lisp"
+  :init
+  (setopt dtk-program "swiftmac")
+  (setopt swiftmac-default-voice-string "[{voice :com.apple.voice.super-compact.pl-PL.Zosia}] [[pitch 1]]")
+  (setopt tts-notification-device "right")
+  :custom
+  (emacspeak-speak-tooltips t)
+  (emacspeak-play-program sox-play)
+  (emacspeak-eww-inhibit-images t)
+  (emacspeak-speak-time-brief-format "%l:%M")
+  (emacspeak-speak-time-format "%l:%M%p on %A %B %_e")
+  (emacspeak-erc-speak-all-participants t)
+  (swiftmac-default-speech-rate 0.8)
+  :config
+  (dtk-set-punctuations 'none 4)
+  (emacspeak-toggle-character-echo 4)
+  (emacspeak-toggle-word-echo 4)
+  (load "~/.emacs.d/voice-definitions.el"))
 
 (use-package emacs
   :ensure nil
@@ -27,11 +47,13 @@
 (use-package ido
   :ensure nil
   :custom
-  (ido-mode 'both nil (ido))
   (ido-everywhere t)
   (ido-enable-flex-matching t)
   (ido-create-new-buffer 'always)
   (ido-use-filename-at-point 'guess))
+  :config
+  (load "~/emacspeak/lisp/emacspeak-ido.elc")
+  (ido-mode +1)
 
 (use-package autoinsert
   :ensure nil
@@ -75,6 +97,8 @@
   :custom
   (org-confirm-babel-evaluate nil)
   (org-html-html5-fancy t))
+:config
+(load "~/emacspeak/lisp/emacspeak-org.elc")
 
 (use-package org2blog
   :ensure t
@@ -92,31 +116,15 @@
   (erc-nick "TheNunonical")
   (erc-away-nickname "TheNunonical (AFK)")
   (erc-email-userid "arkadiusz@swietnicki.dev"))
+  :config
+(load "~/emacspeak/lisp/emacspeak-erc.elc")
 
 (use-package gnus
   :ensure nil
   :custom
   (gnus-init-file "~/.emacs.d/gnus.el"))
-
-(use-package emacspeak-setup
-  :load-path "~/emacspeak/lisp"
-  :init
-  (setopt dtk-program "swiftmac")
-  (setopt swiftmac-default-voice-string "[{voice :com.apple.voice.super-compact.pl-PL.Zosia}] [[pitch 1]]")
-  (setopt tts-notification-device "right")
-  :custom
-  (emacspeak-speak-tooltips t)
-  (emacspeak-play-program sox-play)
-  (emacspeak-eww-inhibit-images t)
-  (emacspeak-speak-time-brief-format "%l:%M")
-  (emacspeak-speak-time-format "%l:%M%p on %A %B %_e")
-  (emacspeak-erc-speak-all-participants t)
-  (swiftmac-default-speech-rate 0.8)
-  :config
-  (dtk-set-punctuations 'none 4)
-  (emacspeak-toggle-character-echo 4)
-  (emacspeak-toggle-word-echo 4)
-  (load "~/.emacs.d/voice-definitions.el"))
+:config
+  (load "~/emacspeak/lisp/emacspeak-gnus.elc")
 
 (use-package gdscript-mode
   :ensure t
@@ -216,14 +224,16 @@ Read Info node `(elisp) Desktop Notifications' for details."
   "\\.swift\\'"
   :interpreter
   "swift")
+
 (use-package lsp-mode
   :ensure t
   :bind-keymap
-  ("C-c l" . lsp-command-map)
+  ("C-c '" . lsp-command-map)
   :commands
   lsp
   :hook
   ((swift-mode . lsp)))
+
 (use-package lsp-ui
   :ensure t)
 
@@ -249,18 +259,3 @@ Read Info node `(elisp) Desktop Notifications' for details."
 
 (use-package magit
   :ensure t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(alert applescript-mode auctex company consult-gh empv flycheck
-	   gdscript-mode lsp-mode lsp-sourcekit lsp-ui magit md4rd nov
-	   org2blog swift-mode telega tmr)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
