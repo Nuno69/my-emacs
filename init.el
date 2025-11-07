@@ -50,10 +50,10 @@
   (ido-everywhere t)
   (ido-enable-flex-matching t)
   (ido-create-new-buffer 'always)
-  (ido-use-filename-at-point 'guess))
+  (ido-use-filename-at-point 'guess)
   :config
   (load "~/emacspeak/lisp/emacspeak-ido.elc")
-  (ido-mode +1)
+  (ido-mode 1))
 
 (use-package autoinsert
   :ensure nil
@@ -93,12 +93,44 @@
   (outline-blank-line t))
 
 (use-package org
-  :ensure nil
+  :pin gnu
+  :ensure t
   :custom
+  (org-agenda-files '("~/org"))
+  (org-capture-templates '(
+			   ("n" "Notatka"
+			    entry (file+headline "szybkie-notatki.org" "Szybkie notatki")
+			    "** %^{Tytuł}\n%?"
+			    :empty-lines 0)
+			   ("j" "Dziennik"
+			    entry (file+datetree "~/org/dziennik.org")
+			    "* %^{Tytuł wpisu}\n%?"
+			    :empty-lines 0)
+			   ("z" "Zadanie"
+			    entry (file+headline "~/org/osobiste.org" "Zadania")
+			    "* DO-ZROBIENIA [#B]%^{Opis}\n:Utworzono: %T\n%?"
+			    :empty-lines 0)
+			   ))
   (org-confirm-babel-evaluate nil)
-  (org-html-html5-fancy t))
-:config
-(load "~/emacspeak/lisp/emacspeak-org.elc")
+  (org-directory "~/org")
+  (org-log-done 'time)
+  (org-html-html5-fancy t)
+  (org-return-follow-link t)
+  (org-startup-folded 'fold)
+  (org-todo-keywords '((
+			sequence "DO-ZROBIENIA(t)" "PLANOWANIE(p)" "W-TRAKCIE(w)" "ZABLOKOWANE(@)" "|" "ZROBIONE(z!)" "NIEPOWODZENIE(N@!)" "ANULOWANE(a@/!)")))
+  :config
+  (load "~/emacspeak/lisp/emacspeak-org.elc"))
+
+(use-package org-contacts
+  :ensure t
+  :after org)
+
+(use-package org-roam
+  :ensure t
+  :after org
+  :custom
+  (org-roam-directory "~/org-roam"))
 
 (use-package org2blog
   :ensure t
@@ -115,16 +147,16 @@
   :custom
   (erc-nick "TheNunonical")
   (erc-away-nickname "TheNunonical (AFK)")
-  (erc-email-userid "arkadiusz@swietnicki.dev"))
+  (erc-email-userid "arkadiusz@swietnicki.dev")
   :config
-(load "~/emacspeak/lisp/emacspeak-erc.elc")
+  (load "~/emacspeak/lisp/emacspeak-erc.elc"))
 
 (use-package gnus
   :ensure nil
   :custom
-  (gnus-init-file "~/.emacs.d/gnus.el"))
-:config
-  (load "~/emacspeak/lisp/emacspeak-gnus.elc")
+  (gnus-init-file "~/.emacs.d/gnus.el")
+  :config
+  (load "~/emacspeak/lisp/emacspeak-gnus.elc"))
 
 (use-package gdscript-mode
   :ensure t
@@ -134,7 +166,7 @@
   :ensure t
   :bind-keymap ("C-c t" . telega-prefix-map)
   :custom
-  (telega-server-libs-prefix "/opt/homebrew/Cellar/tdlib/HEAD-dd1b761")
+  (telega-server-libs-prefix "/usr/local/lib")
   (telega-chat-show-avatars nil)
   (telega-animation-play-inline nil)
   (telega-use-images nil)
@@ -252,10 +284,22 @@ Read Info node `(elisp) Desktop Notifications' for details."
 (use-package company
   :ensure t
   :config
+  (load "~/emacspeak/lisp/emacspeak-company.elc")
   (global-company-mode +1))
 
 (use-package flycheck
   :ensure t)
 
 (use-package magit
+  :ensure t
+  :config
+  (load "~/emacspeak/lisp/emacspeak-magit.elc"))
+
+(use-package transient
+  :ensure t
+  :config
+  (load-file "~/emacspeak/lisp/emacspeak-transient.elc"))
+
+(use-package cmake-mode
   :ensure t)
+(put 'erase-buffer 'disabled nil)
